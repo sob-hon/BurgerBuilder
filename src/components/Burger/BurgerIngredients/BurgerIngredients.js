@@ -4,6 +4,9 @@ import PropTypes from "prop-types";
 
 const BurgerIngredients = (props) => {
   let ingredients = null;
+  BurgerIngredients.propTypes = {
+    type: PropTypes.string.isRequired,
+  };
 
   switch (props.type) {
     case "bread-bottom":
@@ -13,8 +16,8 @@ const BurgerIngredients = (props) => {
     case "bread-top":
       ingredients = (
         <div className={classes.BreadTop}>
-          <div className="classes Seeds1"></div>
-          <div className="classes Seeds2"></div>
+          <div className={classes.Seeds1}></div>
+          <div className={classes.Seeds2}></div>
         </div>
       );
       break;
@@ -38,11 +41,9 @@ const BurgerIngredients = (props) => {
     default:
       ingredients = null;
 
-      return ingredients;
-  }
-  BurgerIngredients.propTypes = {
-    type: PropTypes.string.isRequired,
-  };
+    }
+    return ingredients;
+    
 };
 
 export default BurgerIngredients;
