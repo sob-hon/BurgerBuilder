@@ -2,6 +2,8 @@ import React, { Component } from "react";
 import Auxiliary from "../../hoc/Auxiliary";
 import Burger from "../../components/Burger/Burger";
 import BuildControls from "../../components/Burger/BuildControls/BuildControls";
+import Modal from "../../components/UI/Modal/Modal";
+import OrderSummary from "../../components/Burger/OrderSummary/OrderSummary";
 
 const ingredientPrices = {
   salad: 0.3,
@@ -19,16 +21,17 @@ class BurgerBuilder extends Component {
     },
     totalPrice: 1.1,
     purchaseable: false,
+    purchasing: false,
   };
 
-  updatePurchase = () => {
+  updatePurchase = (ingredients) => {
     let sum = 0;
-    for (const key of Object.keys(this.state.ingredients)) {
-      sum += this.state.ingredients[key]; 
+    for (const key of Object.keys(ingredients)) {
+      sum += ingredients[key];
     }
 
     this.setState({
-      purchaseable: sum >= 0,
+      purchaseable: sum > 0,
     });
   };
 
@@ -44,7 +47,7 @@ class BurgerBuilder extends Component {
       ingredients: updatedIngredients,
       totalPrice: newPrice,
     });
-    this.updatePurchase();
+    this.updatePurchase(updatedIngredients);
   };
 
   removeIngredientHandler = (type) => {
@@ -60,7 +63,13 @@ class BurgerBuilder extends Component {
       ingredients: updatedIngredients,
       totalPrice: newPrice,
     });
-    this.updatePurchase();
+    this.updatePurchase(updatedIngredients);
+  };
+
+  purchasingHanlder = () => {
+    this.setState({
+      purchasing: true,
+    });
   };
 
   render() {
@@ -72,8 +81,19 @@ class BurgerBuilder extends Component {
       disabledInfo[key] = disabledInfo[key] <= 0;
     }
 
+    let modal = null;
+    if (this.state.purchasing) {
+      modal = (
+        <Modal>
+          <OrderSummary ingredients={this.state.ingredients} />
+        </Modal>
+      );
+      console.log(modal);
+    }
+
     return (
       <Auxiliary>
+        {modal}
         <Burger ingredients={this.state.ingredients} />
         <BuildControls
           ingredientAdded={this.addIngredientHandler}
@@ -81,6 +101,7 @@ class BurgerBuilder extends Component {
           price={this.state.totalPrice}
           disabled={disabledInfo}
           purchaseable={!this.state.purchaseable}
+          purchasing={this.purchasingHanlder}
         />
       </Auxiliary>
     );
