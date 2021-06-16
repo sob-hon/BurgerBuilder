@@ -18,6 +18,18 @@ class BurgerBuilder extends Component {
       bacon: 0,
     },
     totalPrice: 1.1,
+    purchaseable: false,
+  };
+
+  updatePurchase = () => {
+    let sum = 0;
+    for (const key of Object.keys(this.state.ingredients)) {
+      sum += this.state.ingredients[key]; 
+    }
+
+    this.setState({
+      purchaseable: sum >= 0,
+    });
   };
 
   addIngredientHandler = (type) => {
@@ -27,13 +39,12 @@ class BurgerBuilder extends Component {
       ...this.state.ingredients,
     };
     updatedIngredients[type] = updatedCount;
-    const newPrice = +(this.state.totalPrice + ingredientPrices[type]).toFixed(
-      2
-    );
+    const newPrice = this.state.totalPrice + ingredientPrices[type];
     this.setState({
       ingredients: updatedIngredients,
       totalPrice: newPrice,
     });
+    this.updatePurchase();
   };
 
   removeIngredientHandler = (type) => {
@@ -44,18 +55,17 @@ class BurgerBuilder extends Component {
     const updatedCount = oldCount - 1;
     const updatedIngredients = { ...this.state.ingredients };
     updatedIngredients[type] = updatedCount;
-    const newPrice = +(this.state.totalPrice - ingredientPrices[type]).toFixed(
-      2
-    );
+    const newPrice = this.state.totalPrice - ingredientPrices[type];
     this.setState({
       ingredients: updatedIngredients,
       totalPrice: newPrice,
     });
+    this.updatePurchase();
   };
 
   render() {
     const disabledInfo = {
-      ...this.state.ingredients
+      ...this.state.ingredients,
     };
 
     for (let key in disabledInfo) {
@@ -70,6 +80,7 @@ class BurgerBuilder extends Component {
           ingredientRemoved={this.removeIngredientHandler}
           price={this.state.totalPrice}
           disabled={disabledInfo}
+          purchaseable={!this.state.purchaseable}
         />
       </Auxiliary>
     );
