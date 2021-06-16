@@ -72,6 +72,16 @@ class BurgerBuilder extends Component {
     });
   };
 
+  cancelPurchaseHandler = () => {
+    this.setState({
+      purchasing: false,
+    });
+  };
+
+  continuePurchaseHandler = () => {
+    alert("You continue!!!")
+  };
+
   render() {
     const disabledInfo = {
       ...this.state.ingredients,
@@ -81,19 +91,26 @@ class BurgerBuilder extends Component {
       disabledInfo[key] = disabledInfo[key] <= 0;
     }
 
-    let modal = null;
-    if (this.state.purchasing) {
-      modal = (
-        <Modal>
-          <OrderSummary ingredients={this.state.ingredients} />
-        </Modal>
-      );
-      console.log(modal);
-    }
+    // let modal = null;
+    // if (this.state.purchasing) {
+    //   modal = (
+    //     <Modal>
+    //       <OrderSummary ingredients={this.state.ingredients} />
+    //     </Modal>
+    //   );
+    //   console.log(modal);
+    // }
 
     return (
       <Auxiliary>
-        {modal}
+        <Modal show={this.state.purchasing} modalClosed= {this.cancelPurchaseHandler}>
+          <OrderSummary
+            ingredients={this.state.ingredients}
+            cancel={this.cancelPurchaseHandler}
+            continue={this.continuePurchaseHandler}
+            price={this.state.totalPrice}
+          />
+        </Modal>
         <Burger ingredients={this.state.ingredients} />
         <BuildControls
           ingredientAdded={this.addIngredientHandler}
