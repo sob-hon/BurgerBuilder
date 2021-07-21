@@ -4,8 +4,8 @@ import classes from './Order.module.css'
 const Order = (props) => {
     return ( 
         <div className={classes.Order}>
-            <p>Gi</p>
-            <p>Gi tar</p>
+            <p>Ingredients: </p>
+            <p>Price: <strong>USD {props.totalPrice.toFixed(2)}</strong></p>
         </div>
      );
 }
