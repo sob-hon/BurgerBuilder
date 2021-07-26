@@ -11,13 +11,18 @@
   font-weight: bold;
 }
 
+.Button:disabled {
+  color: #ccc;
+  cursor: not-allowed;
+}
+
 .Button:first-of-type {
   margin-left: 0;
   padding-left: 0;
 }
 
 .Success {
-  color: #5C9210;
+  color: #5c9210;
 }
 
 .Danger {
